@@ -3,54 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Open Your PDF</title>
-
-    <!-- Open Graph Metadata for WhatsApp/Facebook preview -->
-    <meta property="og:title" content="Open Your PDF">
-    <meta property="og:description" content="Click to access your personalized PDF">
-    <meta property="og:image" content="https://drive.google.com/uc?export=view&id=1wk6MP5x0pGiwjRnWjMJxmE8lQ1KYorA5">
+    <title>Download Your PDF</title>
+    
+    <!-- Open Graph Meta Tags with TEST IMAGE -->
+    <meta property="og:title" content="Download Your Important Document">
+    <meta property="og:description" content="Click to access your personalized PDF file">
+    <meta property="og:image" content="https://i.ibb.co/6nZ5P0t/pdf-download.jpg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
+    <meta property="og:url" content="https://example.com/pdf-download">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://yourwebsite.com/pdf-page"> <!-- Replace with your actual URL -->
-
+    
     <style>
         body {
+            font-family: 'Arial', sans-serif;
+            background: #f8f9fa;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #f4f4f4;
-            font-family: Arial, sans-serif;
             margin: 0;
             padding: 20px;
-            box-sizing: border-box;
-        }
-        .pdf-container {
             text-align: center;
+        }
+        .container {
             max-width: 600px;
         }
-        .pdf-button {
-            padding: 25px 50px;
-            background-color: #4CAF50;
-            color: white;
-            font-size: 22px;
-            font-weight: bold;
-            border: none;
-            border-radius: 12px;
-            cursor: pointer;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            transition: all 0.3s ease;
-            text-decoration: none;
+        .download-btn {
             display: inline-block;
-            margin-bottom: 20px;
+            padding: 15px 30px;
+            background: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 18px;
+            margin: 20px 0;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
-        .pdf-button:hover {
-            background-color: #45a049;
+        .download-btn:hover {
+            background: #45a049;
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
         }
-        .note {
+        .instructions {
             color: #666;
             font-size: 14px;
             margin-top: 20px;
@@ -58,10 +55,14 @@
     </style>
 </head>
 <body>
-    <div class="pdf-container">
+    <div class="container">
+        <h1>Your Document Is Ready</h1>
+        <p>Click the button below to download your PDF file</p>
+        
         <!-- Replace with your actual PDF link -->
-        <a href="YOUR_PDF_LINK.pdf" target="_blank" class="pdf-button">Open Your PDF</a>
-        <p class="note">If the PDF doesn't open automatically, check your downloads folder or try right-clicking the button and selecting "Save link as..."</p>
+        <a href="YOUR_PDF_LINK_HERE.pdf" class="download-btn">Download PDF Now</a>
+        
+        <p class="instructions">If the download doesn't start automatically, right-click the button and select "Save link as..."</p>
     </div>
 </body>
 </html>
