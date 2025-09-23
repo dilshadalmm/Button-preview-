@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CEE2082 Mock Test</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #6a11cb;
+            --secondary-color: #2575fc;
+            --background-color: #f0f4f8;
+            --card-background: #ffffff;
+            --text-color: #333;
+            --light-text-color: #666;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+            --border-radius: 12px;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            color: var(--text-color);
+        }
+
+        .container {
+            width: 90%;
+            max-width: 700px;
+            background: var(--card-background);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            text-align: center;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.8s forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+        }
+
+        #quiz-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            text-align: left;
+        }
+
+        .question-card {
+            background-color: #f9f9f9;
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .question-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-color);
+        }
+
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .option-label {
+            display: block;
+            background-color: #f1f5f9;
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: background-color 0.2s, box-shadow 0.2s;
+            position: relative;
+            user-select: none;
+            text-align: left;
+        }
+
+        .option-label:hover {
+            background-color: #e2e8f0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        input[type="radio"] {
+            display: none;
+        }
+
+        input[type="radio"]:checked + .option-label {
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            box-shadow: var(--shadow);
+        }
+
+        button {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 2rem;
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+            width: 100%;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        #score-container {
+            display: none;
+            padding: 2rem;
+            background-color: var(--card-background);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            animation: fadeIn 0.8s forwards;
+        }
+
+        #score-container h2 {
+            color: var(--primary-color);
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        #score-container p {
+            font-size: 1.2rem;
+            color: var(--light-text-color);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem;
+            }
+
+            h1 {
+                font-size: 1.75rem;
+            }
+
+            .question-card {
+                padding: 1rem;
+            }
+
+            .question-text {
+                font-size: 1rem;
+            }
+
+            button {
+                padding: 0.75rem 1.5rem;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>CEE2082 Mock Test</h1>
+        <div id="quiz-container">
+            <!-- Questions will be dynamically inserted here -->
+        </div>
+        <button id="submit-btn">Submit</button>
+
+        <div id="score-container">
+            <h2>Your Score:</h2>
+            <p id="score-display"></p>
+        </div>
+    </div>
+
+    <script>
+        const quizContainer = document.getElementById('quiz-container');
+        const submitBtn = document.getElementById('submit-btn');
+        const scoreContainer = document.getElementById('score-container');
+        const scoreDisplay = document.getElementById('score-display');
+
+        let questions = [];
+
+        async function loadQuestions() {
+            try {
+                const response = await fetch('cee2082_mock.json');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                questions = await response.json();
+                renderQuestions();
+            } catch (error) {
+                console.error("Failed to load questions:", error);
+                quizContainer.innerHTML = "<p>Failed to load the quiz. Please try again later.</p>";
+            }
+        }
+
+        function renderQuestions() {
+            quizContainer.innerHTML = '';
+            questions.forEach((q, index) => {
+                const questionCard = document.createElement('div');
+                questionCard.className = 'question-card';
+                
+                const questionText = document.createElement('p');
+                questionText.className = 'question-text';
+                questionText.textContent = `${index + 1}. ${q.question}`;
+                questionCard.appendChild(questionText);
+
+                const optionsList = document.createElement('div');
+                optionsList.className = 'options-list';
+                
+                q.options.forEach((option, optIndex) => {
+                    const optionId = `q${index}-opt${optIndex}`;
+                    
+                    const radioInput = document.createElement('input');
+                    radioInput.type = 'radio';
+                    radioInput.id = optionId;
+                    radioInput.name = `question-${index}`;
+                    radioInput.value = option;
+
+                    const label = document.createElement('label');
+                    label.htmlFor = optionId;
+                    label.className = 'option-label';
+                    label.textContent = option;
+                    
+                    optionsList.appendChild(radioInput);
+                    optionsList.appendChild(label);
+                });
+                
+                questionCard.appendChild(optionsList);
+                quizContainer.appendChild(questionCard);
+            });
+        }
+
+        function checkAnswers() {
+            let score = 0;
+            let totalQuestions = questions.length;
+
+            questions.forEach((q, index) => {
+                const selectedOption = document.querySelector(`input[name="question-${index}"]:checked`);
+                if (selectedOption && selectedOption.value === q.correctAnswer) {
+                    score++;
+                }
+            });
+
+            // Hide the quiz and show the score
+            quizContainer.style.display = 'none';
+            submitBtn.style.display = 'none';
+            scoreContainer.style.display = 'block';
+            
+            scoreDisplay.textContent = `${score} / ${totalQuestions}`;
+        }
+
+        submitBtn.addEventListener('click', checkAnswers);
+
+        // Load the questions when the page loads
+        document.addEventListener('DOMContentLoaded', loadQuestions);
+    </script>
+</body>
+</html>
+
+  
